@@ -1,0 +1,13 @@
+DATASET:
+  TRAIN_PATH: "/home/ubuntu/surface_water_detection/SAM-fine-tune/dataset/train"
+  TEST_PATH: "/home/ubuntu/surface_water_detection/SAM-fine-tune/dataset/test"
+  IMAGE_FORMAT: ".png"
+
+SAM:
+  CHECKPOINT: "/home/ubuntu/surface_water_detection/SAM-fine-tune/sam_vit_b_01ec64.pth"
+  RANK: 512
+
+TRAIN:
+  BATCH_SIZE: 1
+  NUM_EPOCHS: 10
+  LEARNING_RATE: 0.0001
