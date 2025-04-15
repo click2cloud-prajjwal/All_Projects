@@ -136,6 +136,7 @@ ENV/
 env.bak/
 venv.bak/
 weeddiseaseenv
+diseaseenv
 
 # Spyder project settings
 .spyderproject
@@ -178,7 +179,10 @@ checkpoint_epoch_30.pth
 class_map.pkl
 meta_model.pkl
 best.pt
-<<<<<<< HEAD
 sam_vit_h_4b8939.pth
-=======
->>>>>>> e4742d79f371238b9dce018adb2d58a5f8a2c201
+
+dataset
+sugarcane_class_map.pkl
+sugarcane_meta_model.pkl
+sugarcane_disease_classifier.pth
+extras

@@ -1,83 +1,92 @@
+import streamlit as st
 import torch
-from flask import Flask, request, jsonify
+import numpy as np
 from PIL import Image
-from torchvision import transforms
-from transformers import SwinForImageClassification
-import io
-import torch.nn.functional as F
+import joblib
+import torchvision.transforms as transforms
+from transformers import AutoModelForImageClassification, AutoImageProcessor
+import timm
+import os
 
-# Initialize Flask app
-app = Flask(__name__)
+# Load Swin Model
+swin_model = AutoModelForImageClassification.from_pretrained("rmezapi/sugarcane-diagnosis-swin-tiny")
+swin_model.eval()
+swin_processor = AutoImageProcessor.from_pretrained("microsoft/swin-tiny-patch4-window7-224")
 
-# Load the Swin model and processor
-model_path = "/home/ubuntu/sugarcane_disease_detection/model_chkpt/swin_tiny_epoch10.pth"
-model = SwinForImageClassification.from_pretrained('rmezapi/sugarcane-diagnosis-swin-tiny')
-model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')), strict=False)
-model.eval()
+# Load EfficientNet Model
+EB3_MODEL_PATH = "./checkpoint_epoch_30.pth"
+checkpoint = torch.load(EB3_MODEL_PATH, map_location="cpu")
 
-# Define the class names
-class_names = [
-    "BrownRust",
-    "Dried Leaves",
-    "Grassy shoot",
-    "Healthy",
-    "Mosaic",
-    "Pokkah Boeng",
-    "Red Rot",
-    "Rust",
-    "Smut",
-    "Yellow"
-]
+efficientnet_model = timm.create_model("efficientnet_b3", pretrained=False, num_classes=8)
+efficientnet_model.load_state_dict(checkpoint["model_state_dict"]) 
+efficientnet_model.eval()
 
-# Image pre-processing transformations
-transform = transforms.Compose([
+# Load Random Forest Meta Classifier
+rf_model = joblib.load("./sugarcane_meta_model.pkl")
+
+# Load Class Mapping
+class_map = joblib.load("./sugarcane_class_map.pkl")  # Ensure this file contains a dictionary mapping indices to class names
+
+# Image Transformation
+efficientnet_transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-# Confidence threshold
-CONFIDENCE_THRESHOLD = 0.75
+def get_predictions(image):
+    """Extract features from both models and stack them."""
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+    
+    # swin Feature Extraction
+    inputs = swin_processor(images=image, return_tensors="pt")
+    with torch.no_grad():
+        swin_logits = swin_model(**inputs).logits.cpu().numpy()
+    
+    # EfficientNet Feature Extraction
+    image_tensor = efficientnet_transform(image).unsqueeze(0)
+    with torch.no_grad():
+        efficientnet_preds = efficientnet_model(image_tensor).cpu().numpy()
+    
+    # Stack Features
+    stacked_features = np.hstack([swin_logits, efficientnet_preds])
+    return stacked_features
 
-# Define the route for image classification
-@app.route('/predict', methods=['POST'])
-def predict():
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
+def predict_disease(image):
+    """Predict disease using stacked features with a threshold of 0.5."""
+    features = get_predictions(image)
+    
+    # Get probability estimates
+    probabilities = rf_model.predict_proba(features)
+    max_prob = np.max(probabilities)
+    
+    if max_prob < 0.7:
+        return "Unknown Disease"
+    
+    predicted_class = np.argmax(probabilities)
+    
+    print(f"Predicted Raw Class: {predicted_class}")  # Debugging
+    print(f"Available Class Indices: {list(class_map.values())}")  # Debugging
+    
+    if predicted_class not in class_map.values():
+        return f"Unknown Class {predicted_class}"
+    
+    # Reverse lookup class name
+    predicted_label = [k for k, v in class_map.items() if v == predicted_class]
+    return predicted_label[0] if predicted_label else f"Unknown Class {predicted_class}"
 
-    file = request.files['file']
 
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
+# Streamlit UI
+st.title("🌾 Rice Disease Classifier")
+st.write("Upload an image of a rice leaf to detect the disease.")
 
-    try:
-        # Read and preprocess the image
-        image = Image.open(io.BytesIO(file.read())).convert("RGB")
-        image = transform(image).unsqueeze(0)  # Add batch dimension
-
-        # Inference
-        with torch.no_grad():
-            outputs = model(image)
-            logits = outputs.logits
-            probs = F.softmax(logits, dim=1)
-            confidence, predicted_class_idx = torch.max(probs, dim=1)
-            confidence = confidence.item()
-
-            if confidence < CONFIDENCE_THRESHOLD:
-                predicted_class_name = "Unknown Disease"
-                predicted_class_idx = -1  # Optional: you can also omit this field
-            else:
-                predicted_class_name = class_names[predicted_class_idx.item()]
-                predicted_class_idx = predicted_class_idx.item()
-
-        return jsonify({
-            'predicted_class_idx': predicted_class_idx,
-            'predicted_class_name': predicted_class_name,
-            'confidence': round(confidence, 4)
-        }), 200
-
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg", "bmp", "tiff", "gif", "webp"])
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+    
+    if st.button("Predict Disease"):
+        with st.spinner("Analyzing..."):
+            prediction = predict_disease(image)
+        st.success(f"Predicted Disease: **{prediction}**")
