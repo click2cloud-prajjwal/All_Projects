@@ -1,16 +1,16 @@
-# 💧 Surface Water Detection in Farm Fields using SAM
+#  Surface Water Detection in Farm Fields using SAM
 
 This project uses cutting-edge AI to **detect and highlight surface water** in farm fields using satellite or drone images. It's especially helpful for **farmers** to monitor water availability and plan irrigation more efficiently.
 
 ---
 
-## 🧐 What Does It Do?
+##  What Does It Do?
 
 When you upload an image of a farm field, this tool automatically **detects the presence of surface water** and displays it using a **clear visual mask**. This helps you easily see where water is present in your field.
 
 ---
 
-## 🌊 What Makes It Special?
+##  What Makes It Special?
 
 - ✅ Uses **SAM (Segment Anything Model)** from Meta AI, known for accurate image segmentation.
 - ✅ Fine-tuned using **100 well-annotated images** of surface water in farm environments.
