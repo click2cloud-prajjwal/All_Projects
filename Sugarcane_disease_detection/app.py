@@ -2,30 +2,23 @@ import streamlit as st
 import torch
 import numpy as np
 from PIL import Image
-import joblib
 import torchvision.transforms as transforms
-from transformers import AutoModelForImageClassification, AutoImageProcessor
 import timm
-import os
+import joblib
 
-# Load Swin Model
-swin_model = AutoModelForImageClassification.from_pretrained("rmezapi/sugarcane-diagnosis-swin-tiny")
-swin_model.eval()
-swin_processor = AutoImageProcessor.from_pretrained("microsoft/swin-tiny-patch4-window7-224")
-
-# Load EfficientNet Model
-EB3_MODEL_PATH = "./checkpoint_epoch_30.pth"
+# Load EfficientNetB3 Model
+EB3_MODEL_PATH = "/home/ubuntu/sugarcane_disease_detection/sugarcane_disease/checkpoint_epoch_25.pth"
 checkpoint = torch.load(EB3_MODEL_PATH, map_location="cpu")
 
 efficientnet_model = timm.create_model("efficientnet_b3", pretrained=False, num_classes=8)
-efficientnet_model.load_state_dict(checkpoint["model_state_dict"]) 
+efficientnet_model.load_state_dict(checkpoint["model_state_dict"])
 efficientnet_model.eval()
 
-# Load Random Forest Meta Classifier
-rf_model = joblib.load("./sugarcane_meta_model.pkl")
-
 # Load Class Mapping
-class_map = joblib.load("./sugarcane_class_map.pkl")  # Ensure this file contains a dictionary mapping indices to class names
+class_map = joblib.load("./sugarcane_class_map.pkl")  # dict like {'Red Rot': 0, 'Healthy': 1, ...}
+
+# Reverse class_map to make index -> label
+index_to_label = {v: k for k, v in class_map.items()}
 
 # Image Transformation
 efficientnet_transform = transforms.Compose([
@@ -34,52 +27,29 @@ efficientnet_transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-def get_predictions(image):
-    """Extract features from both models and stack them."""
+def predict_disease(image):
+    """Predict disease directly from EfficientNetB3."""
     if image.mode != "RGB":
         image = image.convert("RGB")
     
-    # swin Feature Extraction
-    inputs = swin_processor(images=image, return_tensors="pt")
-    with torch.no_grad():
-        swin_logits = swin_model(**inputs).logits.cpu().numpy()
-    
-    # EfficientNet Feature Extraction
     image_tensor = efficientnet_transform(image).unsqueeze(0)
+    
     with torch.no_grad():
-        efficientnet_preds = efficientnet_model(image_tensor).cpu().numpy()
+        outputs = efficientnet_model(image_tensor)
+        probabilities = torch.nn.functional.softmax(outputs, dim=1).cpu().numpy()[0]
     
-    # Stack Features
-    stacked_features = np.hstack([swin_logits, efficientnet_preds])
-    return stacked_features
-
-def predict_disease(image):
-    """Predict disease using stacked features with a threshold of 0.5."""
-    features = get_predictions(image)
+    predicted_class = int(np.argmax(probabilities))
+    confidence = float(np.max(probabilities))
     
-    # Get probability estimates
-    probabilities = rf_model.predict_proba(features)
-    max_prob = np.max(probabilities)
-    
-    if max_prob < 0.7:
-        return "Unknown Disease"
-    
-    predicted_class = np.argmax(probabilities)
-    
-    print(f"Predicted Raw Class: {predicted_class}")  # Debugging
-    print(f"Available Class Indices: {list(class_map.values())}")  # Debugging
-    
-    if predicted_class not in class_map.values():
+    if predicted_class not in index_to_label:
         return f"Unknown Class {predicted_class}"
     
-    # Reverse lookup class name
-    predicted_label = [k for k, v in class_map.items() if v == predicted_class]
-    return predicted_label[0] if predicted_label else f"Unknown Class {predicted_class}"
-
+    label = index_to_label[predicted_class]
+    return f"{label} ({confidence * 100:.2f}% confidence)"
 
 # Streamlit UI
-st.title("🌾 Rice Disease Classifier")
-st.write("Upload an image of a rice leaf to detect the disease.")
+st.title("🌾 Sugarcane Disease Classifier")
+st.write("Upload an image of a sugarcane leaf to detect the disease.")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg", "bmp", "tiff", "gif", "webp"])
 if uploaded_file is not None:
