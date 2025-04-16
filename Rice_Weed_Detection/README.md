@@ -4,13 +4,13 @@ This project helps **identify and highlight weeds** in rice fields using advance
 
 ---
 
-## 🧐 What Does It Do?
+##  What Does It Do?
 
 By analyzing photos of rice fields, this system can **detect different types of weeds** and **highlight them with colored masks**. This makes it easier to identify where the weeds are and take action accordingly.
 
 ---
 
-## 🌾 What Makes It Special?
+##  What Makes It Special?
 
 - ✅ **Trained on 5000 images** of rice fields with multiple types of weeds.
 - ✅ Uses **YOLO (You Only Look Once)** — a fast and accurate object detection model.
