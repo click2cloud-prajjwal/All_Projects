@@ -4,13 +4,13 @@ This project helps **identify sugarcane plant diseases** from photos of sugarcan
 
 ---
 
-## 🧐 What Does It Do?
+##  What Does It Do?
 
 With this tool, you can **upload a photo of a sugarcane leaf**, and it will **tell you if the plant is healthy or affected by a disease**. If a disease is found, the system will identify which one it is from a list of common sugarcane diseases.
 
 ---
 
-## 🦠 Diseases It Can Detect:
+##  Diseases It Can Detect:
 
 1. **Grassy Shoot** – causes excessive tillering and stunted growth  
 2. **Healthy** – your sugarcane plant is free from disease  
