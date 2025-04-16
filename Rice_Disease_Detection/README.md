@@ -4,13 +4,13 @@ This project helps **identify rice plant diseases** from pictures of rice leaves
 
 ---
 
-## 🧐 What Does It Do?
+##  What Does It Do?
 
 By uploading a photo of a rice leaf, this system can **automatically tell if the plant is healthy or infected** — and if it is infected, it can **identify the type of disease** from 8 possible types.
 
 ---
 
-## 🦠 Diseases It Can Detect:
+##  Diseases It Can Detect:
 
 1. **Bacterial Leaf Blight** – causes yellowing and drying of leaves  
 2. **Brown Spot** – shows up as small brown patches  
