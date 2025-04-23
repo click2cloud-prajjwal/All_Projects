@@ -17,10 +17,9 @@ By uploading a photo of a rice leaf, this system can **automatically tell if the
 3. **Leaf Blast** – creates diamond-shaped grey spots  
 4. **Leaf Scald** – long stripes that look burned  
 5. **Narrow Brown Spot** – thin, brown lines or spots  
-6. **Neck Blast** – affects the rice panicle, drying it out  
-7. **Sheath Blight** – white or grey lesions on the leaf sheath  
-8. **Tungro** – leads to stunted growth and yellow-orange coloring  
-9. **Healthy** – no disease found, your plant is doing great!
+6. **Sheath Blight** – white or grey lesions on the leaf sheath  
+7. **Rice Hispa** – causes white streaks on leaves due to scraping and mining
+8. **Healthy** – No disease found, your plant is doing great!
 
 ---
 
