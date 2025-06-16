@@ -25,7 +25,7 @@ By uploading a photo of a rice leaf, this system can **automatically tell if the
 
 ## 🧠 How Does It Work?
 
-- The system is trained using **5000 images** of diseased and healthy rice leaves.
+- The system is trained using **5000+ images** of diseased and healthy rice leaves.
 - It uses a powerful AI model called **EfficientNet-B3** that is good at recognizing images.
 - We also combine multiple models together in a technique called **model ensembling** to make sure the predictions are more accurate.
 - There's a simple interface where you just **upload an image** and the system will **predict the disease** within seconds.
