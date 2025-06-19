@@ -27,7 +27,7 @@ With this tool, you can **upload a photo of a sugarcane leaf**, and it will **te
 
 ## 🧠 How Does It Work?
 
-- The system was trained on **8,000+ images** of sugarcane leaves.
+- The system was trained on **8987 images** of sugarcane leaves.
 - It uses **EfficientNet-B3**, an AI model known for its speed and accuracy in understanding images.
 - Multiple models are combined using **model ensembling**, which means results from different models are merged to make better predictions.
 - You just need to **upload an image**, and the system will **analyze it and tell you the disease**.
@@ -37,6 +37,7 @@ With this tool, you can **upload a photo of a sugarcane leaf**, and it will **te
 ## 🛠️ What’s Included in the Project?
 
 - `Efficientnetb3-train.py` – trains the main AI model.
+- 
 - `model_ensemble.py` – combines predictions from multiple models.
 - `app.py` – the interface that users interact with.
 - `requirements.txt` – lists tools needed to run the project.
