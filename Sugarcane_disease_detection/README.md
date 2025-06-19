@@ -12,16 +12,18 @@ With this tool, you can **upload a photo of a sugarcane leaf**, and it will **te
 
 ##  Diseases It Can Detect:
 
-1. **Grassy Shoot** – causes excessive tillering and stunted growth.     *(567 images)*
-2. **Healthy** – your sugarcane plant is free from disease.              *(625 images)*
-3. **Mosaic** – shows patterns of light and dark green areas on leaves.  *(620 images)*
-4. **Pokkah Boeng** – leads to twisted leaves and reddish stripes.       *(504 images)*
-5. **Red Rot** – a serious fungal disease causing red patches inside stalks.   *(635 images)*
-6. **Rust** – shows as small orange or brown spots on the leaves.        *(625 images)*
-7. **Smut** – forms black whip-like structures on the plant.             *(931 images)*
-8. **Yellow Leaf** – yellowing of leaves, especially the midrib area.    *(622 images)*
-9. **Unknown** – Tells the crops are not sugarcane or is unknown.        *(368 images)*
----
+| **Class**        | **Description**                                                                | **Image Count** |
+| ---------------- | ------------------------------------------------------------------------------ | --------------- |
+| **Grassy Shoot** | Characterized by excessive tillering and overall stunted growth.               | 567             |
+| **Healthy**      | Represents sugarcane plants free from visible disease symptoms.                | 625             |
+| **Mosaic**       | Displays irregular patterns of light and dark green areas on the leaves.       | 620             |
+| **Pokkah Boeng** | Leads to twisted, malformed leaves with reddish or purple stripes.             | 504             |
+| **Red Rot**      | A severe fungal disease marked by red discoloration within the stalk tissue.   | 635             |
+| **Rust**         | Appears as small, orange to brown pustules or spots on the leaf surface.       | 625             |
+| **Smut**         | Identified by the presence of long, black, whip-like structures on the plant.  | 931             |
+| **Yellow Leaf**  | Shows yellowing symptoms, especially along the leaf midrib.                    | 622             |
+| **Unknown**      | Used for non-sugarcane crops or instances where the disease status is unclear. | 368             |
+
 
 ## 🧠 How Does It Work?
 
