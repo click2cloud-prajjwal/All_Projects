@@ -37,7 +37,7 @@ With this tool, you can **upload a photo of a sugarcane leaf**, and it will **te
 ## 🛠️ What’s Included in the Project?
 
 - `Efficientnetb3-train.py` – trains the main AI model.
-- 
+- `fine-tune_16-06.py` - new updated training model script with new unknown class
 - `model_ensemble.py` – combines predictions from multiple models.
 - `app.py` – the interface that users interact with.
 - `requirements.txt` – lists tools needed to run the project.
