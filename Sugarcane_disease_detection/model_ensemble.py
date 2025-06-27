@@ -16,7 +16,7 @@ swin_model.eval()
 swin_processor = AutoImageProcessor.from_pretrained("microsoft/swin-tiny-patch4-window7-224")
 
 # Load fine-tuned EfficientNet-B3 using timm for correct architecture
-EB3_MODEL_PATH = "/home/ubuntu/sugarcane_disease_detection/sugarcane_disease/checkpoint_epoch_25.pth"
+EB3_MODEL_PATH = "./checkpoint_epoch_25.pth"
 checkpoint = torch.load(EB3_MODEL_PATH, map_location="cpu")
 
 model = timm.create_model("efficientnet_b3", pretrained=False, num_classes=8)
