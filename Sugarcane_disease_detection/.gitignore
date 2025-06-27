@@ -186,3 +186,4 @@ exceptional_files
 balanced_dataset
 Sugarcane_data
 Sugarcane_data.zip
+checkpoint_epoch_25.pth
