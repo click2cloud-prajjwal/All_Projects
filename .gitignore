@@ -186,3 +186,7 @@ sugarcane_class_map.pkl
 sugarcane_meta_model.pkl
 sugarcane_disease_classifier.pth
 extras
+final_chkpnts
+models
+water-segmentation
+dataset
