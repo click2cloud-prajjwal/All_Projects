@@ -1,40 +1,53 @@
 # 🌾 Rice Disease Detection
 
-This project helps **identify rice plant diseases** from pictures of rice leaves using artificial intelligence (AI). It's designed to support **farmers** in detecting crop health problems quickly and accurately.
+This project helps **identify rice plant diseases** from photos of rice leaves using artificial intelligence (AI). It's designed to help **farmers** quickly detect and recognize problems in rice crops.
 
 ---
 
-##  What Does It Do?
+## 📸 What Does It Do?
 
-By uploading a photo of a rice leaf, this system can **automatically tell if the plant is healthy or infected** — and if it is infected, it can **identify the type of disease** from 8 possible types.
+With this tool, you can **upload a photo of a rice leaf**, and it will **tell you if the plant is healthy or affected by a disease**. If a disease is found, the system will identify which one it is from a list of common rice diseases.
 
 ---
 
-##  Diseases It Can Detect:
+## 🦠 Diseases It Can Detect
 
-1. **Bacterial Leaf Blight** – causes yellowing and drying of leaves  
-2. **Brown Spot** – shows up as small brown patches  
-3. **Leaf Blast** – creates diamond-shaped grey spots  
-4. **Leaf Scald** – long stripes that look burned  
-5. **Narrow Brown Spot** – thin, brown lines or spots  
-6. **Sheath Blight** – white or grey lesions on the leaf sheath  
-7. **Rice Hispa** – causes white streaks on leaves due to scraping and mining
-8. **Healthy** – No disease found, your plant is doing great!
+| **Class**                | **Description**                                                               | **Image Count** |
+| ------------------------ | ----------------------------------------------------------------------------- | --------------- |
+| **Bacterial Leaf Blight** | Caused by bacteria, leading to yellowing and drying of leaves from the tips. | 2,581           |
+| **Brown Spot**           | Circular brown spots that weaken the plant and reduce yield.                 | 2,563           |
+| **Healthy**              | Represents rice plants free from visible disease symptoms.                   | 2,608           |
+| **Leaf Blast**           | Shows diamond-shaped lesions with grey centers and brown margins.            | 2,603           |
+| **Leaf Scald**           | Characterized by large lesions with wavy edges that dry leaf tips.           | 2,790           |
+| **Narrow Brown Spot**    | Narrow brown streaks along the leaf blades.                                  | 2,538           |
+| **Rice Hispa**           | Insect pest that causes scraping and white streaks on leaves.                |   780           |
+| **Sheath Blight**        | Causes lesions on leaf sheaths near the water line.                          | 2,720           |
+
+**Total Images:** 19,183
 
 ---
 
 ## 🧠 How Does It Work?
 
-- The system is trained using **5000+ images** of diseased and healthy rice leaves.
-- It uses a powerful AI model called **EfficientNet-B3** that is good at recognizing images.
-- We also combine multiple models together in a technique called **model ensembling** to make sure the predictions are more accurate.
-- There's a simple interface where you just **upload an image** and the system will **predict the disease** within seconds.
+- The system was trained on **19,183 images** of rice leaves.
+- It uses **EfficientNet-B3**, an advanced AI model known for high speed and accuracy.
+- Multiple models are combined using **model ensembling**, merging results for more reliable predictions.
+- You simply **upload an image**, and the system will **analyze it and detect the disease**.
 
 ---
 
-## 🛠️ What's Inside This Project?
+## 🛠️ What’s Included in the Project?
 
-- `Efficientnetb3-train.py` – the program that trains the AI model.
+- `Efficientnetb3-train.py` – trains the main AI model.
 - `model_ensemble.py` – combines results from different models for better accuracy.
-- `app.py` – makes everything work together and creates a simple user interface.
-- `requirements.txt` – lists the tools used to run the project.
+- `app.py` – creates a simple user interface for uploading images and viewing results.
+- `requirements.txt` – lists all tools and libraries needed to run the project.
+
+---
+
+## ✅ How to Use
+
+1. Clone this repository.
+2. Install dependencies using `pip install -r requirements.txt`.
+3. Run `app.py` to start the interface.
+4. Upload a rice leaf image and get the prediction!
